@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ setIsLoggedIn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -9,11 +9,12 @@ function Login() {
 
   const handleLogin = () => {
     if (username === 'administrator' && password === 'administrator') {
+      setIsLoggedIn(true); // ✅ obvesti App.js da si prijavljen
+      localStorage.setItem('loggedIn', 'true');
       navigate('/'); // preusmeri na Main
     } else {
-      setError('Napačno uporabniško ime ali geslo!');
+      setError('❌ Napačno uporabniško ime ali geslo!');
     }
-    localStorage.setItem('loggedIn', 'true');
   };
 
   return (
