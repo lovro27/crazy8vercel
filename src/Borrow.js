@@ -5,20 +5,34 @@ function Borrow({ isLoggedIn }) {
   const [message, setMessage] = useState('');
   const [orders, setOrders] = useState([]);
 
-  const games = [
-    { name: 'Monopoly' },
-    { name: 'Človek ne jezi se' },
-    { name: 'Šah' }
-  ];
+  // Dodano stanje za razpoložljivost iger
+  const [games, setGames] = useState([
+    { name: 'Monopoly', available: 5 },
+    { name: 'Človek ne jezi se', available: 5 },
+    { name: 'Šah', available: 5 }
+  ]);
 
+  // Funkcija za naročanje igre
   const handleOrder = (gameName) => {
+    const game = games.find(g => g.name === gameName); // Poiščemo izbrano igro
+
     if (!isLoggedIn) {
       setMessage("⚠ Za naročilo igre se moraš prijaviti.");
-    } else {
+    } else if (game.available > 0) {
+      // Če je igra na voljo, jo naročimo
       setOrders([...orders, gameName]);
       setMessage(`✅ Igro "${gameName}" si uspešno naročil!`);
+
+      // Zmanjšamo razpoložljivost igre
+      const updatedGames = games.map(g => 
+        g.name === gameName ? { ...g, available: g.available - 1 } : g
+      );
+      setGames(updatedGames);
+    } else {
+      setMessage(`❌ Opravičujemo se, igra "${gameName}" ni več na voljo.`);
     }
 
+    // Samodejno skrijemo sporočilo po nekaj sekundah
     setTimeout(() => setMessage(''), 4000);
   };
 
@@ -63,7 +77,7 @@ function Borrow({ isLoggedIn }) {
               backgroundColor: '#fef3c7'
             }}
           >
-            <span>{game.name}</span>
+            <span>{game.name} - {game.available} na voljo</span>
             <button
               onClick={() => handleOrder(game.name)}
               style={{
