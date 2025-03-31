@@ -24,45 +24,46 @@ function Game() {
   const [playedCard, setPlayedCard] = useState(null);
   const [gameOverMessage, setGameOverMessage] = useState('');
   const [tokenEarned, setTokenEarned] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false); // 🆕 novo stanje
 
-  // Uporabimo useEffect, da ob začetku igre nastavimo začetno stanje
   useEffect(() => {
-    startNewGame();  // Zagnati novo igro ob začetku
-  }, []); // Ob začetku samo resetiramo igro in preprečimo, da bi bilo kaj "prezgodaj"
+    startNewGame();
+  }, []);
 
-  // Funkcija za začetek nove igre
   const startNewGame = () => {
-    const shuffled = shuffle(fullDeck); // Zmešaj karte
-    const player = shuffled.slice(0, 7);  // 7 kart za igralca
-    const computer = shuffled.slice(7, 14); // 7 kart za računalnik
-    const remaining = shuffled.slice(14);  // preostale karte v žepu
+    const shuffled = shuffle(fullDeck);
+    const player = shuffled.slice(0, 7);
+    const computer = shuffled.slice(7, 14);
+    const remaining = shuffled.slice(14);
 
     setPlayerHand(player);
     setComputerHand(computer);
     setPlayedCard(remaining[0]);
     setDeck(remaining.slice(1));
-    setGameOverMessage(''); // Poništi gameOverMessage ob začetku igre
-    setTokenEarned(false); // Poništi žeton ob začetku igre
+    setGameOverMessage('');
+    setTokenEarned(false);
+    setGameStarted(true); // 🆕 označi začetek igre
   };
 
   useEffect(() => {
-    // Preveri, če je igra končana, ko se spremenijo roke igralca in računalnika
+    if (!gameStarted) return;
+
     if (playerHand.length === 0) {
       setGameOverMessage('🎉 Zmagal si! Porabil si vse karte.');
-      setTokenEarned(true); // Podelimo žeton ob zmagi
+      setTokenEarned(true);
     } else if (computerHand.length === 0) {
       setGameOverMessage('😔 Računalnik je zmagal!');
     } else if (deck.length === 0 && !hasPlayableCard(playerHand) && !hasPlayableCard(computerHand)) {
       setGameOverMessage('😐 Neodločeno! Nihče ne more več igrati in ni več kart.');
     }
-  }, [playerHand, computerHand, deck]);
+  }, [playerHand, computerHand, deck, gameStarted]);
 
   const hasPlayableCard = (hand) => {
     return hand.some(card => isPlayable(card));
   };
 
   const drawCard = () => {
-    if (deck.length === 0 || gameOverMessage) return;  // Prepreči vlečenje, če je igra končana
+    if (deck.length === 0 || gameOverMessage) return;
     const newCard = deck[0];
     setPlayerHand([...playerHand, newCard]);
     setDeck(deck.slice(1));
@@ -78,7 +79,7 @@ function Game() {
   };
 
   const playCard = (index) => {
-    if (gameOverMessage) return; // Prepreči igranje kart, če je igra končana
+    if (gameOverMessage) return;
     const card = playerHand[index];
     if (!isPlayable(card)) {
       alert('Neveljavna poteza!');
@@ -94,7 +95,7 @@ function Game() {
   };
 
   const computerTurn = () => {
-    if (gameOverMessage) return; // Prepreči računalnikov potezo, če je igra končana
+    if (gameOverMessage) return;
     let newHand = [...computerHand];
     let newDeck = [...deck];
     let played = null;

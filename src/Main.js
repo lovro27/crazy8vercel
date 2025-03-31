@@ -21,12 +21,12 @@ function Main() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'flex-start', // spremenjeno na flex-start, da vse pride bližje vrhu
+      justifyContent: 'flex-start',
       textAlign: 'center',
       height: '100vh',
       backgroundColor: '#1e1e1e',
       padding: '0px',
-      margin: '0', // odstranimo dodatne margine
+      margin: '0',
     }}>
       <img src="/logo444.png" alt="Logo" style={{
         width: '600px',
@@ -38,19 +38,19 @@ function Main() {
       {loggedIn && <p style={{ color: 'lightgreen' }}>✅ Uspešno ste prijavljeni.</p>}
       <p style={{ marginTop: '-160px' }}>Izberi možnost:</p>
 
-      {/* Vodoravna postavitev gumbov */}
+      {/* Gumbi */}
       <div style={{
         display: 'flex',
         gap: '10px',
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: '10px', // zmanjšamo razmik med logotipom in gumbi
+        marginTop: '10px',
       }}>
         <Link to="/izposoja">
           <button style={{ backgroundColor: 'orange', padding: '10px 20px', borderRadius: '8px' }}>📦 Izposoja iger</button>
         </Link>
 
-        <Link to="/igra">
+        <Link to="/navodila">
           <button style={{ backgroundColor: 'teal', padding: '10px 20px', borderRadius: '8px' }}>🎮 Crazy 8</button>
         </Link>
 
@@ -67,7 +67,7 @@ function Main() {
 
       {/* Kontaktna vizitka */}
       <div style={{
-        marginTop: '80px', // zmanjšan marginTop za dvig vizitke
+        marginTop: '80px',
         padding: '20px',
         borderRadius: '12px',
         backgroundColor: '#2e2e2e',

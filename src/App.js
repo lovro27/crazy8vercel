@@ -10,17 +10,16 @@ import Login from './Login';
 function Navodila() {
   return (
     <div style={{ textAlign: 'center', marginTop: '100px' }}>
-      <h2>Navodila za igro Crazy 8</h2>
+      <h2>📜 Navodila za igro Crazy 8</h2>
       <p>Cilj igre je čim prej porabiti vse karte.</p>
-      <Link to="/">
-        <button>⬅ Nazaj</button>
+      <Link to="/igra">
+        <button style={{ padding: '10px 20px', marginTop: '20px' }}>🎮 Začni igro</button>
       </Link>
     </div>
   );
 }
 
 function App() {
-  // ✅ Dodamo prijavo
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
@@ -30,7 +29,6 @@ function App() {
         <Route path="/navodila" element={<Navodila />} />
         <Route path="/igra" element={<Game />} />
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-        {/* ✅ Posredujemo status prijave v Borrow komponento */}
         <Route path="/izposoja" element={<Borrow isLoggedIn={isLoggedIn} />} />
       </Routes>
     </Router>
